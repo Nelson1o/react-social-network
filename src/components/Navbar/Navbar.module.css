@@ -1,0 +1,24 @@
+.nav {
+    grid-area: n;
+    background-color: antiquewhite;
+    padding: 20px;
+}
+
+div:not(:last-child){
+    margin-bottom: 5px;
+}
+
+.item a{
+    color: white;
+    text-decoration: none;
+}
+
+.item .active{
+    color: black;
+    text-decoration: underline;
+}
+
+/* .item a:hover{
+    color: red;
+    text-decoration: underline;
+} */
