@@ -8,17 +8,17 @@
 }
 
 .dialogs__item .active{
-    color: gold;
+    
 }
 
-.item__dialog{
-
+.item__dialog a{
+    color: white;
 }
 
 .messages{
     padding: 10px;   
 }
 
-.message{
-
+.messages .message{
+    color: white;
 }
