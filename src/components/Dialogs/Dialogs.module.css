@@ -13,6 +13,17 @@
 
 .item__dialog a{
     color: white;
+    text-decoration: none;
+}
+
+.item__dialog a:hover{
+    color: gray;
+    text-decoration: underline;
+}
+
+.item__dialog .active{
+    color: gold;
+    text-decoration: underline;
 }
 
 .messages{
