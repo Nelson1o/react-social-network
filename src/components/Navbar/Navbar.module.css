@@ -18,7 +18,7 @@ div:not(:last-child){
     text-decoration: underline;
 }
 
-/* .item a:hover{
-    color: red;
+.item a:hover{
+    color: gray;
     text-decoration: underline;
-} */
+}
