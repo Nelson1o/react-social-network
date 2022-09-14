@@ -1,3 +1,7 @@
+import dialogsReducer from "./dialogsReducer";
+import profileReducer from "./profileReducer";
+import sidebarReducer from "./sidebarReducer";
+
 let store = {
     _state: {
         profilePage: {
@@ -25,8 +29,16 @@ let store = {
                 { id: 4, message: 'Oups!?' },
                 { id: 5, message: 'Yo' },
                 { id: 6, message: 'Hello world!' }
-            ]
-        }
+            ],
+
+            newMessageText: ''
+        },
+
+        sidebar: {}
+    },
+
+    subscribe(observer) {
+        this._callSubscriber = observer;  // observer
     },
 
     getState() {
@@ -37,27 +49,13 @@ let store = {
         console.log("State change");
     },
 
-    addPost() {
-        let newPost = {
-            id: 5,
-            post: this._state.profilePage.newPostText,
-            likesCount: 0
-        };
-
-        this._state.profilePage.posts.push(newPost);
-        this._state.profilePage.newPostText = "";
+    dispatch(action) {   // {type: 'ADD-POST'}
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+        
         this._callSubscriber(this._state);
-    },
-
-    updateNewPostText(newText) {
-        this._state.profilePage.newPostText = newText;
-        this._callSubscriber(this._state);
-    },
-
-    subscribe(observer) {
-        this._callSubscriber = observer;  // observer
     }
-
 }
 
 export default store;
