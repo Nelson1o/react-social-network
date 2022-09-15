@@ -1,7 +1,15 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 
-const profileRuducer = (state, action) => {
+let initialState = {
+    posts: [
+        { id: 1, post: 'Hi, how are you?', likesCount: '15' },
+        { id: 2, post: 'It\'s my first post', likesCount: '18' }
+    ],
+    newPostText: "React Super Good"
+};
+
+const profileRuducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
             let newPost = {

@@ -1,4 +1,6 @@
-const sidebarRuducer = (state, action) => {
+let initialState = {};
+
+const sidebarRuducer = (state = initialState, action) => {
 
 
     return state;

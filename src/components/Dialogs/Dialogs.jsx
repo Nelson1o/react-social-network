@@ -8,7 +8,7 @@ const Dialogs = (props) => {
 
     let state = props.store.getState().dialogsPage;
 
-    let newMessageBody = state.newMessageBody;
+    let newMessageBody = state.newMessageText;
 
     let dialogsElement = state.dialogsData.map((d) => {
         return <DialogItem name={d.name} id={d.id} />

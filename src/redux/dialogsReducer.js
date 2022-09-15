@@ -1,7 +1,29 @@
 const UPDATE_NEW_MESSSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY';
 const SEND_MESSAGE = 'SEND-MESSAGE';
 
-const dialogsRuducer = (state, action) => {
+let initialState = {
+    dialogsData: [
+        { id: 1, name: 'Dimych' },
+        { id: 2, name: 'Andrey' },
+        { id: 3, name: 'Sveta' },
+        { id: 4, name: 'Sasha' },
+        { id: 5, name: 'Victor' },
+        { id: 6, name: 'Anton' }
+    ],
+
+    messagesData: [
+        { id: 1, message: 'Hi!' },
+        { id: 2, message: 'What is your Name?' },
+        { id: 3, message: 'Where are you?' },
+        { id: 4, message: 'Oups!?' },
+        { id: 5, message: 'Yo' },
+        { id: 6, message: 'Hello world!' }
+    ],
+
+    newMessageText: ''
+};
+
+const dialogsRuducer = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_NEW_MESSSAGE_BODY:
             state.newMessageText = action.body;
