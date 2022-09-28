@@ -1,4 +1,3 @@
-const UPDATE_NEW_MESSSAGE_BODY = 'UPDATE-NEW-MESSAGE-BODY';
 const SEND_MESSAGE = 'SEND-MESSAGE';
 
 let initialState = {
@@ -19,22 +18,14 @@ let initialState = {
         { id: 5, message: 'Yo' },
         { id: 6, message: 'Hello world!' }
     ],
-
-    newMessageText: ''
 };
 
 const dialogsRuducer = (state = initialState, action) => {
     switch (action.type) {
-        case UPDATE_NEW_MESSSAGE_BODY:
-            return {
-                ...state,
-                newMessageText: action.body
-            };
         case SEND_MESSAGE:
-            let body = state.newMessageText;
+            let body = action.newMessageBody;
             return {
                 ...state,
-                newMessageText: '',
                 messagesData: [...state.messagesData, { id: 6, message: `${body}` }]
             };
         default:
@@ -42,16 +33,10 @@ const dialogsRuducer = (state = initialState, action) => {
     }
 }
 
-export const updateNewMessageBodyCreator = (body) => {
-    return {
-        type: UPDATE_NEW_MESSSAGE_BODY,
-        body: body
-    }
-}
-
-export const sendMessageCreator = () => {
+export const sendMessageCreator = (newMessageBody) => {
     return {
         type: SEND_MESSAGE,
+        newMessageBody
     }
 }
 

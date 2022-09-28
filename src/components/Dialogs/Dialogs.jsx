@@ -2,11 +2,34 @@ import React from "react";
 import s from "./Dialogs.module.css";
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
+import { Field, reduxForm } from "redux-form";
+import { Textarea } from "../common/FormsControls/FormsControls";
+import { maxLengthCreator, requiredField } from "../../utils/validators/validators";
+
+const maxLength50 = maxLengthCreator(50);
+
+const addMessageForm = (props) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <div>
+                <Field
+                    component={Textarea}
+                    name={'newMessageBody'}
+                    placeholder='Enter your message...'
+                    validate={[requiredField, maxLength50]}
+                />
+            </div>
+            <div>
+                <button>Send</button>
+            </div>
+        </form>
+    )
+}
+
+const AddMessageFormRedux = reduxForm({ form: 'diaolgAddMessageForm' })(addMessageForm);
 
 const Dialogs = (props) => {
     let state = props.dialogsPage;
-
-    let newMessageBody = state.newMessageText;
 
     let dialogsElement = state.dialogsData.map((d) => {
         return <DialogItem name={d.name} key={d.id} id={d.id} />
@@ -16,13 +39,8 @@ const Dialogs = (props) => {
         return <Message message={m.message} key={m.id} />
     });
 
-    let onSendMessageClick = () => {
-        props.sendMessage();
-    }
-
-    let onNewMessageChange = (e) => {
-        let body = e.target.value;
-        props.updateNewMessageBody(body);
+    let addNewMessage = (value) => {
+        props.sendMessage(value.newMessageBody);
     }
 
     return (
@@ -33,16 +51,7 @@ const Dialogs = (props) => {
             <div className={s.messages}>
                 <div>{messagesElement}</div>
                 <div>
-                    <div>
-                        <textarea
-                            onChange={onNewMessageChange}
-                            value={newMessageBody}
-                            placeholder='Enter your message...'>
-                        </textarea>
-                    </div>
-                    <div>
-                        <button onClick={onSendMessageClick}>Send</button>
-                    </div>
+                    <AddMessageFormRedux onSubmit={addNewMessage} />
                 </div>
             </div>
         </div>
