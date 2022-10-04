@@ -9,9 +9,9 @@ import s from '../common/FormsControls/FormsControls.module.css'
 
 const maxLength10 = maxLengthCreator(10);
 
-const LoginForm = (props) => {
+const LoginForm = ({handleSubmit, error}) => {
     return (
-        <form action="" onSubmit={props.handleSubmit}>
+        <form action="" onSubmit={handleSubmit}>
             <div>
                 <Field
                     placeholder="Email"
@@ -36,8 +36,8 @@ const LoginForm = (props) => {
                 />
                 Remember Me
             </div>
-            {props.error && <div className={s.formSummaryError}>
-                {props.error}
+            {error && <div className={s.formSummaryError}>
+                {error}
             </div>}
             <div>
                 <button>Log In</button>
