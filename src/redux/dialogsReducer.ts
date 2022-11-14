@@ -27,12 +27,12 @@ let initialState = {
         { id: 4, message: 'Oups!?' },
         { id: 5, message: 'Yo' },
         { id: 6, message: 'Hello world!' }
-    ]as Array<MessageDataType>,
+    ] as Array<MessageDataType>,
 };
 
 export type InitialStateType = typeof initialState;
 
-const dialogsRuducer = (state = initialState, action: any): InitialStateType => {
+const dialogsRuducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case SEND_MESSAGE:
             let body = action.newMessageBody;
@@ -44,6 +44,8 @@ const dialogsRuducer = (state = initialState, action: any): InitialStateType => 
             return state;
     }
 }
+
+type ActionsTypes = SendMessageCreatorActionType;
 
 type SendMessageCreatorActionType = {
     type: typeof SEND_MESSAGE,

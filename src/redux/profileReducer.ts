@@ -1,5 +1,7 @@
+import { ThunkAction } from "redux-thunk";
 import { usersAPI, profileAPI } from "../api/api";
 import { PostType, ProfileType } from "../components/types/types";
+import { AppStateType } from "./reduxStore";
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -17,7 +19,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState;
 
-const profileRuducer = (state = initialState, action: any): InitialStateType => {
+const profileRuducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case ADD_POST: {
             let newPost = {
@@ -47,6 +49,8 @@ const profileRuducer = (state = initialState, action: any): InitialStateType => 
             return state;
     }
 }
+
+type ActionsTypes = AddPostActionCreatorType | SetUserProfileActionType | SetStatusActionType;
 
 type AddPostActionCreatorType = {
     type: typeof ADD_POST,
@@ -84,22 +88,25 @@ export const setStatus = (status: string): SetStatusActionType => {
     }
 }
 
-export const getUserProfile = (userId: number) => {
-    return async (dispatch: any) => {
+//========================================================================================
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
+
+export const getUserProfile = (userId: number): ThunkType => {
+    return async (dispatch) => {
         let response = await usersAPI.getProfile(userId);
         dispatch(setUserProfile(response.data));
     }
 }
 
-export const getStatus = (userId: number) => {
-    return async (dispatch: any) => {
+export const getStatus = (userId: number): ThunkType => {
+    return async (dispatch) => {
         let response = profileAPI.getStatus(userId);
         dispatch(setStatus(response.data));
     }
 }
 
-export const updateStatus = (status: string) => {
-    return async (dispatch: any) => {
+export const updateStatus = (status: string): ThunkType => {
+    return async (dispatch) => {
         try {
             let response = await profileAPI.updateStatus(status);
             if (response.data.resultCode === 0) {
