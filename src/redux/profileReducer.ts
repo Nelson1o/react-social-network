@@ -101,7 +101,7 @@ export const getUserProfile = (userId: number): ThunkType => {
 export const getStatus = (userId: number): ThunkType => {
     return async (dispatch) => {
         let response = profileAPI.getStatus(userId);
-        dispatch(setStatus(response.data));
+        dispatch(setStatus((await response).data));
     }
 }
 
