@@ -1,8 +1,7 @@
-import { AppStateType, InferActionsTypes } from './reduxStore';
-import { usersAPI } from "../api/api";
+import { InferActionsTypes, BaseThunkType } from './reduxStore';
+import { usersAPI } from "../api/usersAPI";
 import { UserType } from "../components/types/types";
 import { updateObjectInArray } from "../utils/objectsHelpers";
-import { ThunkAction } from 'redux-thunk';
 import { Dispatch } from 'redux';
 
 let initialState = {
@@ -115,9 +114,7 @@ export const Actions = {
 type ActionsTypes = InferActionsTypes<typeof Actions>;
 
 //===========================================================================================================================//
-// type GetStateType = () => AppStateType;
-type DispatchType = Dispatch<ActionsTypes>;
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
+type ThunkType = BaseThunkType<ActionsTypes>;
 
 export const requestUsers = (currentPage: number, pageSize: number): ThunkType => {
     return async (dispatch, getState) => {
@@ -130,7 +127,7 @@ export const requestUsers = (currentPage: number, pageSize: number): ThunkType =
     }
 }
 
-const _followUnfollowFlow = async (dispatch: DispatchType,
+const _followUnfollowFlow = async (dispatch: Dispatch<ActionsTypes>,
     userId: number,
     apiMethod: any,
     actionCreator: (userId: number) => ActionsTypes) => {

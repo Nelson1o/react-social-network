@@ -1,10 +1,10 @@
-import { applyMiddleware, combineReducers, legacy_createStore } from "redux";
+import { Action, applyMiddleware, combineReducers, legacy_createStore } from "redux";
 import profileReducer from './profileReducer';
 import dialogsReducer from './dialogsReducer';
 import sidebarReducer from './sidebarReducer';
 import usersReducer from './usersReducer';
 import authRuducer from "./authReducer";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, { ThunkAction } from "redux-thunk";
 import {reducer as formReducer} from 'redux-form';
 import appRuducer from "./appReducer";
 
@@ -23,6 +23,8 @@ export type AppStateType = ReturnType<RootReducerType>;
 
 type PropertiesTypes<T> = T extends {[key: string]: infer U} ? U : never;
 export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>;
+
+export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>;
 
 let store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
