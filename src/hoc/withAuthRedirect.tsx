@@ -1,15 +1,20 @@
+import { AppStateType } from '../redux/reduxStore';
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
-let mapStateToPropsForRedirect = (state) => {
+let mapStateToPropsForRedirect = (state: AppStateType) => {
     return {
         isAuth: state.auth.isAuth
     }
 }
 
-export const withAuthRedirect = (Component) => {
-    class RedirectComponent extends React.Component{
+type OwnPropsType = {
+    isAuth: boolean
+}
+
+export const withAuthRedirect = (Component: any) => {
+    class RedirectComponent extends React.Component<OwnPropsType>{
         render(){
             if(!this.props.isAuth) {
                 return <Navigate to='/login' />

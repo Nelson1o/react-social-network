@@ -11,11 +11,17 @@ import Login from './components/Login/Login';
 import { connect } from "react-redux";
 import { initializeApp } from "./redux/appReducer";
 import Preloader from './components/common/Preloader/Preloader';
+import { AppStateType } from './redux/reduxStore';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 
-class App extends Component {
+type MapPropsType = ReturnType<typeof mapStateToProps>;
+type DispatchPropsType = {
+    initializeApp: () => void
+}
+
+class App extends Component<MapPropsType & DispatchPropsType> {
     catchAllUnhandledErrors = () => {
         alert(PromiseRejectionEvent);
         console.error(PromiseRejectionEvent);
@@ -60,7 +66,7 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppStateType) => {
     return {
         initialized: state.app.initialized
     }
