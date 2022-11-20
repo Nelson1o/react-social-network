@@ -14,8 +14,9 @@ type PropsType = {
     follow: (userId: number) => void,
 }
 
-let User: React.FC<PropsType> = (props) => {
+const User: React.FC<PropsType> = (props) => {
     let u = props.user;
+    
     return (
         <div>
             <span>

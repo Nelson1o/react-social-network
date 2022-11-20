@@ -27,6 +27,8 @@ export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkA
 
 let store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
+export type AppDispatch = typeof store.dispatch;
+
 // @ts-ignore
 window.store = store;
 

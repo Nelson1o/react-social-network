@@ -5,9 +5,9 @@ import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News'
 import Music from './components/Music/Music'
 import Settings from './components/Settings/Settings'
-import UsersContainer from './components/Users/UsersContainer';
+import { UsersPage } from './components/Users/UsersContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
+import { LoginPage } from './components/Login/Login';
 import { connect } from "react-redux";
 import { initializeApp } from "./redux/appReducer";
 import Preloader from './components/common/Preloader/Preloader';
@@ -55,8 +55,8 @@ class App extends Component<MapPropsType & DispatchPropsType> {
                             <Route path='/news' element={<News />} />
                             <Route path='/music' element={<Music />} />
                             <Route path='/settings' element={<Settings />} />
-                            <Route path='/users' element={<UsersContainer pageTitle={"Самураи"}/>} />
-                            <Route path='/login' element={<Login />} />
+                            <Route path='/users' element={<UsersPage pageTitle={"Самураи"}/>} />
+                            <Route path='/login' element={<LoginPage />} />
                             <Route path='*' element={<div>404 NOT FOUND</div>} />
                         </Routes>
                     </Suspense>
