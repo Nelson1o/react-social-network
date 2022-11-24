@@ -3,11 +3,11 @@ import Preloader from "../../common/Preloader/Preloader";
 import s from './ProfileInfo.module.css';
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import userPhoto from '../../../assets/images/user.jpg';
-import { useState } from "react";
+// import { useState } from "react";
 
 const ProfileInfo = (props) => {
 
-    let [editMode, setEditmode] = useState(false);
+    // let [editMode, setEditmode] = useState(false);
 
     if (!props.profile) {
         return <Preloader />
@@ -18,7 +18,7 @@ const ProfileInfo = (props) => {
             <div className={s.description__block}>
                 <img src={props.profile.photos.large || userPhoto} alt='profile img' className={s.mainPhoto} />
                 {props.isOwner && <input type={'file'} />}
-                <ProfileData profile={props.profile} isOwner={props.isOwner} goToEditMode={() => { setEditmode(true) }} />
+                <ProfileData profile={props.profile} isOwner={props.isOwner} goToEditMode={() => {}} />
                 <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus} />
             </div>
         </div>
