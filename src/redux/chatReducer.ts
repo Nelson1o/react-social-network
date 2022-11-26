@@ -1,11 +1,15 @@
 import store, { BaseThunkType, InferActionsTypes, AppStateType } from './reduxStore';
-import { chatAPI, ChatMessageType } from '../api/chatAPI';
+import { chatAPI, ChatMessageApiType, StatusType } from '../api/chatAPI';
 import { Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { useDispatch } from 'react-redux';
+import { v1 } from 'uuid';
+
+type ChatMessageType = ChatMessageApiType & {id: string};
 
 let initialState = {
-    messages: [] as ChatMessageType[]
+    messages: [] as ChatMessageType[],
+    status: 'pending' as StatusType
 };
 
 export type InitialStateType = typeof initialState;
@@ -21,7 +25,13 @@ const chatRuducer = (state = initialState, action: ActionsTypes): InitialStateTy
         case "MESSAGES_RECEIVED":
             return {
                 ...state,
-                messages: [...state.messages, ...action.payload]
+                messages: [...state.messages, ...action.payload.messages.map(m => ({...m, id: v1()}))]
+                    .filter((m, index, array) => index >= array.length - 100)
+            };
+        case "STATUS_CHANGED":
+            return {
+                ...state,
+                status: action.payload.status
             };
         default:
             return state;
@@ -29,13 +39,13 @@ const chatRuducer = (state = initialState, action: ActionsTypes): InitialStateTy
 }
 
 export const Actions = {
-    messagesReceived: (messages: ChatMessageType[]) => ({ type: "MESSAGE_RECEIVED", payload: messages })
+    messagesReceived: (messages: ChatMessageType[]) => ({ type: "MESSAGES_RECEIVED", payload: {messages} } as const),
+    statusChanged: (status: StatusType) => ({ type: "STATUS_CHANGED", payload: {status} } as const)
 }
 
 let _newMessageHandler: ((messages: ChatMessageType[]) => void) | null = null;
-
 const newMessageHandlerCreator = (dispatch: Dispatch) => {
-    if(_newMessageHandler === null) {
+    if (_newMessageHandler === null) {
         _newMessageHandler = (messages) => {
             dispatch(Actions.messagesReceived(messages));
         }
@@ -43,23 +53,37 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
     return _newMessageHandler;
 }
 
+let _statusChangedHandler: ((status: StatusType) => void) | null = null;
+const statusChangedHandlerCreator = (dispatch: Dispatch) => {
+    if (_statusChangedHandler === null) {
+        _statusChangedHandler = (status) => {
+            dispatch(Actions.statusChanged(status));
+        }
+    }
+    return _statusChangedHandler;
+}
+
 export const startMessagesListening = (): ThunkType => {
     return async (dispatch) => {
-        chatAPI.subscribe(newMessageHandlerCreator(dispatch));
+        chatAPI.start();
+        // @ts-ignore
+        chatAPI.subscribe('message-received', newMessageHandlerCreator(dispatch));
+        chatAPI.subscribe('status-changed', statusChangedHandlerCreator(dispatch));
     }
 }
 
 export const stopMessagesListening = (): ThunkType => {
     return async (dispatch) => {
-        chatAPI.unsubscribe(newMessageHandlerCreator(dispatch));
-        chatAPI.start();
+        // @ts-ignore
+        chatAPI.unsubscribe('message-received', newMessageHandlerCreator(dispatch));
+        chatAPI.unsubscribe('status-changed', statusChangedHandlerCreator(dispatch));
+        chatAPI.stop();
     }
 }
 
 export const sendMessage = (message: string): ThunkType => {
     return async (dispatch) => {
         chatAPI.sendMessage(message);
-        chatAPI.stop();
     }
 }
 
